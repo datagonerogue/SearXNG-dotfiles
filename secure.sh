@@ -12,46 +12,44 @@ sudo apt update
 
 # Upgrade installed packages
 echo "Upgrading installed packages..."
-sudo apt upgrade -y
+apt upgrade -y
 
 # Prompt for new username with sudo privileges
 read -p "Enter the username for the new user with sudo privileges: " NEW_USER
-sudo useradd -m -s /bin/bash $NEW_USER
-sudo usermod -aG sudo $NEW_USER
+useradd -m -s /bin/bash $NEW_USER
+usermod -aG sudo $NEW_USER
 
 # Edit SSH configuration file to disable root login and limit users who can SSH
 echo "Configuring SSH..."
-CURRENT_USER=$(whoami)
-sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sudo echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
-sudo echo "AllowUsers $NEW_USER" >> /etc/ssh/sshd_config
-sudo systemctl restart sshd
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+echo "AllowUsers $NEW_USER" >> /etc/ssh/sshd_config
+systemctl restart sshd
 
 # Install firewall (if not already installed)
 echo "Installing and enabling firewall..."
-sudo apt install ufw -y
-sudo ufw enable
+apt install ufw -y
+ufw enable
 
 # Allow SSH (replace 22 with your SSH port if customized)
 echo "Allowing SSH through firewall..."
-sudo ufw allow 22
+ufw allow 22
 
 # Install Fail2Ban
 echo "Installing Fail2Ban..."
-sudo apt install fail2ban -y
+apt install fail2ban -y
 
 # Configure Fail2Ban (optional but recommended)
 echo "Configuring Fail2Ban..."
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-sudo sed -i 's/enable = false/enable = true/g' /etc/fail2ban/jail.local
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sed -i 's/enable = false/enable = true/g' /etc/fail2ban/jail.local
 
 # Install unattended-upgrades
 echo "Installing unattended-upgrades..."
-sudo apt install unattended-upgrades -y
+apt install unattended-upgrades -y
 
 # Configure automatic updates
 echo "Configuring automatic updates..."
-sudo dpkg-reconfigure --priority=low unattended-upgrades
+dpkg-reconfigure --priority=low unattended-upgrades
 
 
 # Enable logging for the script
