@@ -46,6 +46,11 @@ sudo apt install unattended-upgrades -y
 echo "Configuring automatic updates..."
 sudo dpkg-reconfigure --priority=low unattended-upgrades
 
+# Prompt for new username with sudo privileges
+read -p "Enter the username for the new user with sudo privileges: " NEW_USER
+sudo useradd -m -s /bin/bash $NEW_USER
+sudo usermod -aG sudo $NEW_USER
+
 # Enable logging for the script
 LOG_FILE="/var/log/secure_script.log"
 exec > >(tee -a $LOG_FILE)
@@ -56,3 +61,4 @@ set -e
 
 # Display completion message
 echo "Server secured successfully. Check $LOG_FILE for details."
+echo "A new user with sudo privileges has been created: $NEW_USER"
