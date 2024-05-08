@@ -14,6 +14,19 @@ sudo apt update
 echo "Upgrading installed packages..."
 sudo apt upgrade -y
 
+# Prompt for new username with sudo privileges
+read -p "Enter the username for the new user with sudo privileges: " NEW_USER
+sudo useradd -m -s /bin/bash $NEW_USER
+sudo usermod -aG sudo $NEW_USER
+
+# Edit SSH configuration file to disable root login and limit users who can SSH
+echo "Configuring SSH..."
+CURRENT_USER=$(whoami)
+sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+sudo echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
+sudo echo "AllowUsers $NEW_USER" >> /etc/ssh/sshd_config
+sudo systemctl restart sshd
+
 # Install firewall (if not already installed)
 echo "Installing and enabling firewall..."
 sudo apt install ufw -y
@@ -22,12 +35,6 @@ sudo ufw enable
 # Allow SSH (replace 22 with your SSH port if customized)
 echo "Allowing SSH through firewall..."
 sudo ufw allow 22
-
-# Edit SSH configuration file to disable root login and limit users who can SSH
-echo "Configuring SSH..."
-sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sudo echo "AllowUsers yourusername" >> /etc/ssh/sshd_config
-sudo systemctl restart sshd
 
 # Install Fail2Ban
 echo "Installing Fail2Ban..."
@@ -46,10 +53,6 @@ sudo apt install unattended-upgrades -y
 echo "Configuring automatic updates..."
 sudo dpkg-reconfigure --priority=low unattended-upgrades
 
-# Prompt for new username with sudo privileges
-read -p "Enter the username for the new user with sudo privileges: " NEW_USER
-sudo useradd -m -s /bin/bash $NEW_USER
-sudo usermod -aG sudo $NEW_USER
 
 # Enable logging for the script
 LOG_FILE="/var/log/secure_script.log"
