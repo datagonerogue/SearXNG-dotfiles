@@ -7,6 +7,15 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+# Confirmation message with user input
+echo "This script will install unattended-upgrades packages"
+read -p "Proceed with the script? (y/n): " CONFIRMATION
+
+if [[ $CONFIRMATION != "y" ]]; then
+    echo "Script execution aborted."
+    exit 1
+fi
+
 # Update 
 echo -n "Updating and Upgrading packages "
 while true; do
@@ -78,14 +87,6 @@ read -p "Enter the username for the new user with sudo privileges: " NEW_USER
 useradd  -m -s /bin/bash $NEW_USER
 usermod -aG sudo $NEW_USER
 passwd $NEW_USER
-
-echo "
-Configuring SSH for the new user..."
-{
-      echo "AllowUsers $NEW_USER" >> /etc/ssh/sshd_config
-      systemctl restart sshd
-} > /dev/null 2>&1
-echo "Done!"
 
 # Display completion message
 echo "
