@@ -82,7 +82,7 @@ passwd $NEW_USER
 echo "
 Configuring SSH for the new user..."
 {
-      echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
+      echo "AllowUsers $NEW_USER" >> /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
 echo "Done!"
