@@ -1,8 +1,5 @@
 #!/bin/bash
 # Make sure to run this script as root
-# Place the public ssh key in "~/.ssh", You can make it using "ssh-keygen -b 4096"
-
-
 
 # Check if the script is run as root
 if [[ $EUID -ne 0 ]]; then
