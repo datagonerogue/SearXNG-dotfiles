@@ -9,7 +9,6 @@ sudo -u $CURRENT_USER mkdir /home/$CURRENT_USER/.ssh && sudo -u $CURRENT_USER ch
 echo "Configuring SSH..."
 {
       sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-      echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
 

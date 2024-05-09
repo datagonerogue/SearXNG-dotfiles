@@ -8,28 +8,88 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Update 
-echo "Updating and Upgrading packages ..."
+echo -n "Updating and Upgrading packages "
+while true; do
+    echo -n "/"
+    sleep 0.2
+    echo -ne "\b-"
+    sleep 0.2
+    echo -ne "\b\\"
+    sleep 0.2
+    echo -ne "\b|"
+    sleep 0.2
+    echo -ne "\b"
+done &
+UPDATE_PID=$!
 {
     apt update
     apt upgrade -y
 } > /dev/null 2>&1
+kill $UPDATE_PID
+echo "
+Done!"
 
 # Install unattended-upgrades
-echo "Installing unattended-upgrades..."
+echo -n "
+Installing unattended-upgrades "
+while true; do
+    echo -n "/"
+    sleep 0.2
+    echo -ne "\b-"
+    sleep 0.2
+    echo -ne "\b\\"
+    sleep 0.2
+    echo -ne "\b|"
+    sleep 0.2
+    echo -ne "\b"
+done &
+INSTALL_PID=$!
 {
       apt install unattended-upgrades -y
 } > /dev/null 2>&1
-
+kill $INSTALL_PID
+echo "
+Done!"
 
 # Configure automatic updates
-echo "Configuring automatic updates..."
+echo -n "
+Configuring automatic updates "
+while true; do
+    echo -n "/"
+    sleep 0.2
+    echo -ne "\b-"
+    sleep 0.2
+    echo -ne "\b\\"
+    sleep 0.2
+    echo -ne "\b|"
+    sleep 0.2
+    echo -ne "\b"
+done &
+CONFIG_PID=$!
 dpkg-reconfigure -fnoninteractive unattended-upgrades
+kill $CONFIG_PID
+echo "
+Done!"
 
 # Prompt for new username with sudo privileges
+echo "
+Adding a new user..."
 read -p "Enter the username for the new user with sudo privileges: " NEW_USER
 useradd  -m -s /bin/bash $NEW_USER
 usermod -aG sudo $NEW_USER
 passwd $NEW_USER
+
+echo "
+Configuring SSH for the new user..."
+{
+      echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
+      systemctl restart sshd
+} > /dev/null 2>&1
+echo "
+Done!"
+
+
+
 # Display completion message
-echo "Server secured successfully."
 echo "A new user with sudo privileges has been created: $NEW_USER"
+echo "Server secured successfully."
