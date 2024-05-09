@@ -85,11 +85,9 @@ Configuring SSH for the new user..."
       echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
-echo "
-Done!"
-
-
+echo "Done!"
 
 # Display completion message
-echo "A new user with sudo privileges has been created: $NEW_USER"
+echo "
+A new user with sudo privileges has been created: $NEW_USER"
 echo "Server secured successfully."
