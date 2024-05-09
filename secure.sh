@@ -8,11 +8,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Confirmation message with user input
-echo "This script will install unattended-upgrades packages"
+echo "This script will install unattended-upgrades packages and make a new user in sudo group."
 read -p "Proceed with the script? (y/n): " CONFIRMATION
 
 if [[ $CONFIRMATION != "y" ]]; then
-    echo "Script execution aborted."
+    echo "aborted."
     exit 1
 fi
 
@@ -90,5 +90,7 @@ passwd $NEW_USER
 
 # Display completion message
 echo "
-A new user with sudo privileges has been created: $NEW_USER"
-echo "Server secured successfully."
+/////////////////////////////////////////////////////////////////////
+A new user with sudo privileges has been created: $NEW_USER
+Server secured successfully.
+/////////////////////////////////////////////////////////////////////"
