@@ -20,13 +20,30 @@ fi
 # Add the public key to the new user's authorized_keys file
 sudo mkdir /home/$CURRENT_USER/.ssh && sudo chmod 700 /home/$CURRENT_USER/.ssh
 
-# Edit SSH configuration file to disable root login and limit users who can SSH
-echo "Configuring SSH..."
+# Configure SSH
+echo -n "Configuring SSH "
+while true; do
+    echo -n "/"
+    sleep 0.2
+    echo -ne "\b-"
+    sleep 0.2
+    echo -ne "\b\\"
+    sleep 0.2
+    echo -ne "\b|"
+    sleep 0.2
+    echo -ne "\b"
+done &
+SSH_PID=$!
 {
       sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
       echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
+      sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
+kill $SSH_PID
+echo "
+Done!"
+
 
 # Install firewall (if not already installed)
 echo "Installing and enabling firewall..."
@@ -55,3 +72,12 @@ echo "Configuring Fail2Ban..."
       sed -i 's/enable = false/enable = true/g' /etc/fail2ban/jail.local
 
 } > /dev/null 2>&1
+
+# Display completion message
+echo "
+/////////////////////////////////////////////////////////////////////
+SSH configured, firewall installed and enabled, SSH allowed through firewall,
+Fail2Ban installed and configured.
+Server secured successfully.
+/////////////////////////////////////////////////////////////////////
+"
