@@ -16,8 +16,7 @@ if [[ $CONFIRMATION != "y" ]]; then
     echo "aborted."
     exit 1
 fi
-
-CURRENT_USER=$(whoami)
+read -p "Enter the user with SSH Keys: " CURRENT_USER
 
 # Add the public key to the new user's authorized_keys file
 sudo chmod 700 /home/$CURRENT_USER/.ssh
