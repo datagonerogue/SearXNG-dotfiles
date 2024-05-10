@@ -36,9 +36,9 @@ while true; do
 done &
 SSH_PID=$!
 {
-      sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
       echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
-      sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+      echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+      echo "PermitRootLogin no" >> /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
 kill $SSH_PID
