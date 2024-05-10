@@ -3,8 +3,7 @@
 # Place the public ssh key in "~/.ssh", You can make it using "ssh-keygen -b 4096"
 
 # Add the public key to the new user's authorized_keys file
-sudo -u $CURRENT_USER mkdir /home/$CURRENT_USER/.ssh && sudo -u $CURRENT_USER chmod 700 /home/$CURRENT_USER/.ssh
-
+sudo mkdir /home/$CURRENT_USER/.ssh && sudo chmod 700 /home/$CURRENT_USER/.ssh
 # Edit SSH configuration file to disable root login and limit users who can SSH
 echo "Configuring SSH..."
 {
