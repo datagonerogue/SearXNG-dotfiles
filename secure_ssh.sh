@@ -18,7 +18,7 @@ if [[ $CONFIRMATION != "y" ]]; then
 fi
 
 # Add the public key to the new user's authorized_keys file
-sudo mkdir /home/$CURRENT_USER/.ssh && sudo chmod 700 /home/$CURRENT_USER/.ssh
+sudo chmod 700 /home/$CURRENT_USER/.ssh
 
 # Configure SSH
 echo -n "Configuring SSH "
