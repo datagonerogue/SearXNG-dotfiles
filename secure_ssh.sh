@@ -17,6 +17,8 @@ if [[ $CONFIRMATION != "y" ]]; then
     exit 1
 fi
 
+CURRENT_USER=$(whoami)
+
 # Add the public key to the new user's authorized_keys file
 sudo chmod 700 /home/$CURRENT_USER/.ssh
 
