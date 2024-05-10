@@ -2,12 +2,15 @@
 # Make sure to run this script as root
 # Place the public ssh key in "~/.ssh", You can make it using "ssh-keygen -b 4096"
 
+CURRENT_USER=$USER
+
 # Add the public key to the new user's authorized_keys file
-sudo mkdir /home/$CURRENT_USER/.ssh && sudo chmod 700 /home/$CURRENT_USER/.ssh
+sudo mkdir /home/$CURRENT_USER/.ssh
+sudo chmod 700 /home/$CURRENT_USER/.ssh
 # Edit SSH configuration file to disable root login and limit users who can SSH
 echo "Configuring SSH..."
 {
-      sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+      sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_con
       echo "AllowUsers $CURRENT_USER" >> /etc/ssh/sshd_config
       systemctl restart sshd
 } > /dev/null 2>&1
